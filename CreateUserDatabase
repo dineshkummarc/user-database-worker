@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+var CreateUserDatabase = require("./CreateUserDatabase.js");
+var config = {
+  server: "http://127.0.0.1:5984",
+  admin: {
+    user: "j",
+    pass: "j"
+  },
+  persistent_since_storage: "/tmp"
+};
+var creator = new CreateUserDatabase(config);
