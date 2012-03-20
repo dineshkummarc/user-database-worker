@@ -9,7 +9,7 @@ module.exports = CreateDatabaseExternal;
 util.inherits(CreateDatabaseExternal, CouchDBExternal);
 
 function CreateDatabaseExternal(config) {
-  CouchDBExternal.call(this, config.server);
+  CouchDBExternal.call(this, config);
   this._config = config;
 
   var follow_options = {
@@ -39,14 +39,14 @@ function CreateDatabaseExternal(config) {
     }
   };
 
-  var changes = new CouchDBChanges(config.server);
+  var changes = new CouchDBChanges(config);
   changes.follow("_users", change_cb, follow_options, changes_options);
 }
 
 CreateDatabaseExternal.prototype._createDatabase = function(name) {
   var urlobj = url.parse(this._config.server);
   urlobj.auth = this._config.admin.user + ":" + this._config.admin.pass;
-  urlobj.pathname = name;
+  urlobj.path = name;
   var request_options = {
     url: url.format(urlobj),
     method: "PUT"
