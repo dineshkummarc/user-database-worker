@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 var CreateUserDatabase = require("./CreateUserDatabase.js");
 var config = {
-  server: "http://127.0.0.1:5984",
+  server: os.env["CANG_SERVER"]
   admin: {
-    user: "j",
-    pass: "j"
+    user: os.env["CANG_ADMIN_USER"],
+    pass: os.env["CANG_ADMIN_PASS"]
   },
   name_munge_function: function(name) {
     /*
