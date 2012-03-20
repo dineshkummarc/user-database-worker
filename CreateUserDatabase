@@ -6,6 +6,18 @@ var config = {
     user: "j",
     pass: "j"
   },
+  name_munge_function: function(name) {
+    /*
+      Converts an email address user name to a valid database name
+      The character replacement rules are:
+        [A-Z] -> [a-z]
+        @ -> $
+        . -> _
+      Notes:
+       can't reverse because _ are valid before the @.
+    */
+    replace name.toLowerCase().replace(/@/, "$").replace(/\./, "_");
+  },
   persistent_since_storage: "/tmp"
 };
 var creator = new CreateUserDatabase(config);

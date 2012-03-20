@@ -29,6 +29,12 @@ function CreateDatabaseExternal(config) {
     }
 
     if(change.doc && change.doc.name) {
+      var name;
+      if(config.name_munge_function) {
+        name = config.name_munge_function(name);
+      } else {
+        name = change.doc.name;
+      }
       that._createDatabase(change.doc.name);
     }
   };
