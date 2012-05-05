@@ -15,7 +15,7 @@ var config = {
       Notes:
        can't reverse because _ are valid before the @.
     */
-    return name.toLowerCase().replace(/@/, "$").replace(/\./, "_");
+    return name.toLowerCase().replace(/@/, "$").replace(/\./g, "_");
   },
   persistent_since_storage: false
 };
