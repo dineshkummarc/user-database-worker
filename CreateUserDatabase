@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 var CreateUserDatabase = require("./CreateUserDatabase.js");
 var config = {
   server: process.env["CANG_SERVER"],
