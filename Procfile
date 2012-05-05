@@ -1,1 +1,1 @@
-web: node ./CreateUserDatabase
+web: ./CreateUserDatabase
