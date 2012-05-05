@@ -1,1 +1,1 @@
-web: ./CreateUserDatabase
+worker: ./CreateUserDatabase
