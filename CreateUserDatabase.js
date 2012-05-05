@@ -13,8 +13,8 @@ function CreateDatabaseExternal(config) {
   this._config = config;
 
   var follow_options = {
-    persistent_since: true,
-    persistent_since_storage: config.persistent_since_storage || "/tmp"
+    // persistent_since: true,
+    // persistent_since_storage: config.persistent_since_storage || "/tmp"
   };
 
   var changes_options = {

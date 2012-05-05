@@ -18,6 +18,6 @@ var config = {
     */
     return name.toLowerCase().replace(/@/, "$").replace(/\./, "_");
   },
-  persistent_since_storage: "/tmp"
+  persistent_since_storage: false
 };
 var creator = new CreateUserDatabase(config);
