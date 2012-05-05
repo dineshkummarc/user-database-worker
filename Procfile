@@ -1,1 +1,1 @@
-worker: node CreateUserDatabase
+web: node CreateUserDatabase
