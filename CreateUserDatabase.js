@@ -60,16 +60,47 @@ CreateDatabaseExternal.prototype._createDatabase = function(name) {
   urlobj.auth = this._config.admin.user + ":" + this._config.admin.pass;
   
   // encode "/" => "%2F"
-  name = name.replace(/\//g, '%2F')
+  var db_name = name.replace(/\//g, '%2F')
   
-  urlobj.pathname = "/" + name;
+  urlobj.pathname = "/" + db_name;
   var request_options = {
     url: url.format(urlobj),
     method: "PUT"
   };
+  
+  console.log("sending createDB request")
+  
   request(request_options, function(error, response, response_body) {
     if(error !== null) {
       // set error in user doc
+      
+      console.log("error creating user db")
+      console.log( JSON.stringify(error, "", 2) )
+      
+      return
     }
+    
+    urlobj.pathname += "/_security"
+    var request_options = {
+      url: url.format(urlobj),
+      method: "PUT",
+      json: {"admins":{"names":[],"roles":[]},"readers":{"names":[name],"roles":[]}}
+    };
+    
+    console.log("sending security request")
+    
+    request(request_options, function(error, response, response_body) {
+      if(error !== null) {
+        // set error in user doc
+
+        console.log("error setting user db security")
+        console.log( JSON.stringify(error, "", 2) )
+
+        return
+      }
+      
+      console.log("security created")
+      
+    });
   });
 };
