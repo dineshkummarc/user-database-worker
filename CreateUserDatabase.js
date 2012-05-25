@@ -45,10 +45,16 @@ function CreateDatabaseExternal(config) {
         name = change.doc.name;
       }
       
-      console.log("creating database: " + name)
+      console.log("creating database for: " + name)
       
       that._createDatabase(name);
     }
+    
+    if (change.deleted) {
+      name = change.id.split(":").pop()
+      console.log("dropping database of: " + name)
+      that._dropDatabase(name);
+    };
   };
 
   var changes = new CouchDBChanges(config);
@@ -102,5 +108,34 @@ CreateDatabaseExternal.prototype._createDatabase = function(name) {
       console.log("security created")
       
     });
+  });
+};
+
+CreateDatabaseExternal.prototype._dropDatabase = function(name) {
+  var urlobj = url.parse(this._config.server);
+  urlobj.auth = this._config.admin.user + ":" + this._config.admin.pass;
+  
+  // encode "/" => "%2F"
+  var db_name = name.replace(/\//g, '%2F')
+  
+  urlobj.pathname = "/" + db_name;
+  var request_options = {
+    url: url.format(urlobj),
+    method: "DELETE"
+  };
+  
+  console.log("sending dropDB request")
+  
+  request(request_options, function(error, response, response_body) {
+    if(error !== null) {
+      // set error in user doc
+      
+      console.log("error deleting user db")
+      console.log( JSON.stringify(error, "", 2) )
+      
+      return
+    }
+    
+    console.log("database killed")
   });
 };
