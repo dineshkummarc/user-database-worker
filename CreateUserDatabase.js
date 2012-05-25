@@ -5,6 +5,7 @@ var request = require("request");
 var util = require("util");
 var url = require("url");
 
+
 module.exports = CreateDatabaseExternal;
 util.inherits(CreateDatabaseExternal, CouchDBExternal);
 
@@ -23,7 +24,15 @@ function CreateDatabaseExternal(config) {
 
   var that = this;
   var change_cb = function(error, change) {
+    
+    console.log("change")
+    console.log( JSON.stringify(change, "", 2) )
+    
     if(error !== null) {
+      
+      console.log("error")
+      console.log( JSON.stringify(error, "", 2) )
+      
       // todo report error
       return;
     }
@@ -35,6 +44,9 @@ function CreateDatabaseExternal(config) {
       } else {
         name = change.doc.name;
       }
+      
+      console.log("creating database: " + name)
+      
       that._createDatabase(name);
     }
   };
@@ -46,6 +58,10 @@ function CreateDatabaseExternal(config) {
 CreateDatabaseExternal.prototype._createDatabase = function(name) {
   var urlobj = url.parse(this._config.server);
   urlobj.auth = this._config.admin.user + ":" + this._config.admin.pass;
+  
+  // encode "/" => "%2F"
+  name = name.replace(/\//g, '%2F')
+  
   urlobj.pathname = "/" + name;
   var request_options = {
     url: url.format(urlobj),
